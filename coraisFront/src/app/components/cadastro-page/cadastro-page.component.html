@@ -1,0 +1,70 @@
+<div class="cadastro">
+  <div class="cadastro__modal">
+    <form [formGroup]="formulario">
+      <div class="inputs">
+        <div class="inputsForm">
+          <label for="email">Email
+            <input
+              type="text"
+              id="email"
+              name="email"
+              placeholder="email@email.com"
+              formControlName="Email"
+            >
+            <p *ngIf="duplicatedEmail" class="login__input__error">
+              Já existe um cadastro com esse Email
+            </p>
+          </label>
+          <label for="userName">UserName
+            <input
+              type="text"
+              id="userName"
+              name="userName"
+              placeholder="nome123"
+              formControlName="Username"
+            >
+            <p *ngIf="duplicatedUsername" class="login__input__error">
+              Já existe um cadastro com esse UserName
+            </p>
+          </label>
+        </div>
+        <div class="inputsForm">
+          <label for="senha">Senha
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              placeholder="************"
+              formControlName="Password"
+            >
+          </label>
+          <label for="reSenha">Confirme a senha
+            <input
+              type="password"
+              id="reSenha"
+              name="reSenha"
+              placeholder="************"
+              formControlName="RePassword"
+            >
+            <p 
+              *ngIf="
+                formulario.get('Password')?.value !=
+                formulario.get('RePassword')?.value &&
+                formulario.get('RePassword')?.touched"
+              class="login__input__error"
+            >
+              As senhas precisam ser iguais
+            </p>
+          </label>
+        </div>
+      </div>
+      <button
+        (click)="fazerCadastro()"
+        [disabled]="!formulario.valid ||
+        formulario.get('Password')?.value !=
+        formulario.get('RePassword')?.value"
+      >Cadastrar</button>
+      <p>Já tem uma conta? <a routerLink="/loginPage">Faça login</a></p>
+    </form>
+  </div>
+</div>

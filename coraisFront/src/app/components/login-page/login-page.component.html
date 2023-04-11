@@ -1,0 +1,49 @@
+<div class="login">
+  <div class="login__modal">
+    <form [formGroup]="formulario">
+      <label for="userName">Email ou UserName
+        <input
+          type="text"
+          id="userName"
+          name="userName"
+          placeholder="email@email.com"
+          formControlName="Username"
+        >
+        <p 
+          *ngIf="formulario.get('Username')?.errors && formulario.get('Username')?.touched"
+          class="login__input__error"
+        >
+          O email ou UserName é obrigatório
+        </p>
+      </label>
+      <label for="senha">Senha
+        <input
+          type="password"
+          id="senha"
+          name="senha"
+          placeholder="************"
+          formControlName="Password"
+        >
+        <p 
+          *ngIf="formulario.get('Password')?.errors && formulario.get('Password')?.touched"
+          class="login__input__error"
+        >
+          A senha é obrigatória
+        </p>
+      </label>
+      <p 
+        *ngIf="loginUnauthorized"
+        class="login__input__error"
+      >
+        Email ou senha incorretos
+      </p>
+      <button
+        (click)="fazerLogin()"
+        [disabled]="!formulario.valid"
+      >
+        Entrar
+      </button>
+      <p>Ainda não tem uma conta? <a routerLink="/cadastroPage">cadastre-se</a></p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+@import '../../../styles.scss';
+
+.login {
+  height: 100vh;
+  background-color: $background;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $ff-inter;
+  .login__modal {
+    background-color: $background-modal;
+    padding: 3em;
+    border-radius: 12px;
+    box-shadow: 1px 1px 10px $sombra-fraca;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+      .login__input__error {
+        color: red;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 300;
+      }
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4em;
+        input {
+          font-size: 1em;
+          padding: 1em 1.5em;
+          width: 320px;
+          border: none;
+          box-shadow: 1px 1px 10px $sombra-fraca;
+          border-radius: 12px;
+          transition: all ease 0.2s;
+          &:focus {
+            outline: none;
+            box-shadow: 1px 1px 20px $sombra-media;
+          }
+        }
+      }
+      button {
+        padding: 0.4em;
+        font-size: 1.2em;
+        font-weight: 700;
+        background-color: $background;
+        border-radius: 12px;
+        border: 4px solid transparent;
+        box-shadow: 1px 1px 20px $sombra-media;
+        cursor: pointer;
+        transition: all ease 0.4s;
+        &:hover {
+          border: 4px solid $button-hover;
+          box-shadow: 1px 1px 25px $sombra-forte;
+        }
+      }
+      p {
+        text-align: center;
+        a {
+          cursor: pointer;
+          text-decoration: none;
+          color: $link-navegacao;
+        }
+      }
+    }
+  }
+}
