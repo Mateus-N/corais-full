@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using UserApi.Data;
 using UserApi.services;
+using UserApi.Services;
 
 namespace UserApi;
 
@@ -16,10 +17,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        string? dbHost = Environment.GetEnvironmentVariable("DBHOST");
-        string connectionString = Configuration
-            .GetConnectionString("UsuarioConnection")
-            .Replace("$DBHOST$", dbHost);
+        string? connectionString = Configuration
+            .GetConnectionString("UsuarioConnection");
 
         services.AddDbContext<UserDbContext>(options =>
             options.UseMySQL(connectionString)
@@ -30,10 +29,13 @@ public class Startup
         })
         .AddEntityFrameworkStores<UserDbContext>()
         .AddDefaultTokenProviders();
-         
+        
+        services.AddScoped<HobbiesConnectionService, HobbiesConnectionService>();
         services.AddScoped<CadastroService, CadastroService>();
+        services.AddScoped<UsuarioService, UsuarioService>();
         services.AddScoped<LoginService, LoginService>();
         services.AddScoped<TokenService, TokenService>();
+        services.AddScoped<HttpClient, HttpClient>();
 
         services.AddControllers();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

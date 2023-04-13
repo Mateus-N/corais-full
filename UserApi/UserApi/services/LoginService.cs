@@ -7,18 +7,24 @@ namespace UserApi.services;
 
 public class LoginService
 {
-    private SignInManager<IdentityUser<Guid>> signInManager { get; set; }
+    private readonly SignInManager<IdentityUser<Guid>> signInManager;
+    private readonly UsuarioService usuarioService;
     private readonly TokenService tokenService;
 
-    public LoginService(SignInManager<IdentityUser<Guid>> signInManager, TokenService tokenService)
+    public LoginService(
+        SignInManager<IdentityUser<Guid>> signInManager,
+        TokenService tokenService,
+        UsuarioService usuarioService
+        )
     {
         this.signInManager = signInManager;
         this.tokenService = tokenService;
+        this.usuarioService = usuarioService;
     }
 
     public async Task<Result> LogaUsuario(LoginRequest request)
     {
-        IdentityUser<Guid>? user = BuscaUsuario(request.Username);
+        IdentityUser<Guid>? user = usuarioService.BuscaUsuario(request.Username);
 
         if (user != null)
         {
@@ -33,16 +39,5 @@ public class LoginService
         }
 
         return Result.Fail("Login ou senha inválidos!");
-    }
-
-    private IdentityUser<Guid>? BuscaUsuario(string username)
-    {
-        IdentityUser<Guid>? identityUser = signInManager
-            .UserManager
-            .Users
-            .FirstOrDefault(u => u.NormalizedUserName == username.ToUpper() ||
-                u.NormalizedEmail == username.ToUpper());
-
-        return identityUser;
     }
 }
