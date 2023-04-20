@@ -7,7 +7,7 @@ volumes:
 services:
   apigateway:
     build:
-      context: ./
+      context: ./apiGateway
       dockerfile: Dockerfile
     depends_on:
       - usuariosapi
@@ -18,8 +18,15 @@ services:
     networks:
       - coraisrede
 
+  redisusuarios:
+    image: redis
+    ports:
+      - "6380:6379"
+    networks:
+      - coraisrede
+
   dbusuarios:
-    image: mysql
+    image: mysql:8.0.22
     cap_add:
       - SYS_NICE
     ports:
@@ -30,8 +37,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
       MYSQL_DATABASE: usuariodb
     networks:
       - coraisrede
@@ -42,14 +47,17 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - dbusuarios
+      - redisusuarios
     ports:
       - "8080:80"
     restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       - coraisrede
   
   dbhobbies:
-    image: mysql
+    image: mysql:8.0.22
     ports:
       - "3310:3306"
     volumes:
@@ -58,8 +66,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
       MYSQL_DATABASE: hobbiesdb
     networks:
       - coraisrede
@@ -73,6 +79,8 @@ services:
     ports:
       - "8081:80"
     restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       - coraisrede
 

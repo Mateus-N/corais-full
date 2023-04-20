@@ -40,7 +40,7 @@ export class LoginPageComponent {
       )
       .subscribe((response: TokenMessage) => {
         this.loginUnauthorized = false;
-        alert(response.message);
+        alert(response.token);
       })
     }
   }

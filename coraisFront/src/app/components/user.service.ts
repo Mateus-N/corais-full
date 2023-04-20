@@ -9,17 +9,17 @@ import { CreateUserDto } from './dtos/createUserDto';
   providedIn: 'root'
 })
 export class UserService {
-  private readonly api = 'http://localhost:8080';
+  private readonly api = 'http://localhost';
 
   constructor(
     private readonly http: HttpClient
   ) {}
 
   login(dto: LoginUserDto): Observable<TokenMessage> {
-    return this.http.post<TokenMessage>(`${this.api}/login`, dto);
+    return this.http.post<TokenMessage>(`${this.api}/usuarios/login`, dto);
   }
 
   cadastro(dto: CreateUserDto) {
-    return this.http.post(`${this.api}/cadastro`, dto);
+    return this.http.post(`${this.api}/usuarios/cadastro`, dto);
   }
 }

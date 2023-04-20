@@ -3,7 +3,8 @@ using UserApi;
 using UserApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-var startup = new Startup(builder.Configuration);
+
+var startup = new Startup(builder.Configuration, builder.Environment);
 
 startup.ConfigureServices(builder.Services);
 
@@ -20,6 +21,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-startup.Configure(app, app.Environment);
+startup.Configure(app);
 
 app.Run();

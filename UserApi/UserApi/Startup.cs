@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using UserApi.Data;
+using UserApi.Models;
 using UserApi.services;
 using UserApi.Services;
 
@@ -8,15 +10,19 @@ namespace UserApi;
 
 public class Startup
 {
-    public IConfiguration Configuration { get; }
+    public ConfigurationManager Configuration { get; }
+    public IWebHostEnvironment Env { get; }
 
-    public Startup(IConfiguration configuration)
+    public Startup(ConfigurationManager configuration, IWebHostEnvironment env)
     {
         Configuration = configuration;
+        Env = env;
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
+        GetAppSettings(services);
+
         string? connectionString = Configuration
             .GetConnectionString("UsuarioConnection");
 
@@ -41,9 +47,27 @@ public class Startup
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    private void GetAppSettings(IServiceCollection services)
     {
-        if (env.IsDevelopment())
+        Configuration
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{Env.EnvironmentName}.json");
+
+        HobbiesConnection? hobbies = Configuration
+            .GetSection("HobbiesConnectionLink")
+            .Get<HobbiesConnection>();
+        services.AddSingleton(hobbies);
+
+        RedisConnection? redis = Configuration
+            .GetSection("RedisConnection")
+            .Get<RedisConnection>();
+        services.AddSingleton<IConnectionMultiplexer>(
+            ConnectionMultiplexer.Connect(redis.StringConnection));
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        if (Env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }

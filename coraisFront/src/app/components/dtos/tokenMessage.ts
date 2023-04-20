@@ -1,3 +1,3 @@
 export interface TokenMessage {
-  message: string;
+  token: string;
 }

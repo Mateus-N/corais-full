@@ -45,7 +45,7 @@ public class CadastroService
         return ListarErros(resultadoIdentity);
     }
 
-    private Result ListarErros(IdentityResult resultadoIdentity)
+    private static Result ListarErros(IdentityResult resultadoIdentity)
     {
         List<string> errors = resultadoIdentity.Errors
             .Select(error => error.Code).ToList();

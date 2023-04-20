@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.Text;
+using UserApi.Models;
 
 namespace UserApi.Services;
 
 public class HobbiesConnectionService
 {
     private readonly HttpClient httpClient;
+    private readonly HobbiesConnection hobbies;
 
-    public HobbiesConnectionService(HttpClient httpClient)
+    public HobbiesConnectionService(HttpClient httpClient, HobbiesConnection hobbies)
     {
         this.httpClient = httpClient;
+        this.hobbies = hobbies;
     }
 
     public async Task SendToEmailAsync(IdentityUser<Guid> usuario)
@@ -24,7 +27,7 @@ public class HobbiesConnectionService
 
         var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
         var httpResponse = await httpClient
-            .PostAsync("http://172.17.0.1:8081/api/usuario", httpContent);
+            .PostAsync(hobbies.Url, httpContent);
         httpResponse.EnsureSuccessStatusCode();
     }
 }

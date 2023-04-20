@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using UserApi.Dtos;
+using UserApi.Models;
 using UserApi.services;
 
 namespace UserApi.Controllers;
@@ -20,7 +21,12 @@ public class LoginController : ControllerBase
     public async Task<IActionResult> LogaUsuario(LoginRequest request)
     {
         Result resultado = await service.LogaUsuario(request);
-        if (resultado.IsSuccess) return Ok(resultado.Successes.First());
+        if (resultado.IsSuccess)
+        {
+            TokenJsonToReturn token = service.CriaTokenJson(resultado.Successes.First());
+            return Ok(token);
+        }
+
         return Unauthorized();
     }
 }
