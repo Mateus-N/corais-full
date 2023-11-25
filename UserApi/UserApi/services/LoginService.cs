@@ -36,7 +36,7 @@ public class LoginService
         if (user != null)
         {
             SignInResult identityResult = await signInManager
-                .PasswordSignInAsync(user.UserName, request.Password, false, false);
+                .PasswordSignInAsync(user.UserName!, request.Password, false, false);
             if (identityResult.Succeeded)
             {
                 string newToken = tokenService.CreateToken(user).Value;
@@ -64,11 +64,7 @@ public class LoginService
 
     public TokenJsonToReturn CriaTokenJson(ISuccess success)
     {
-        TokenJsonToReturn token = new()
-        {
-            Token = success.Message
-        };
-
+        TokenJsonToReturn token = new(success.Message);
         return token;
     }
 }

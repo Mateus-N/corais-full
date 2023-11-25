@@ -22,7 +22,7 @@ public class Startup
 
         services.AddDbContext<AppDbContext>(options => options
             .UseLazyLoadingProxies()
-            .UseMySQL(connectionString)
+            .UseMySQL(connectionString!)
         );
 
         services.AddAuthentication(auth =>

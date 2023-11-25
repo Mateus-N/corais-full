@@ -37,8 +37,8 @@ public class CadastroService
         if (resultadoIdentity.Succeeded)
         {
             IdentityUser<Guid>? fullUsuario = usuarioService
-                .BuscaUsuario(usuarioIdentity.UserName);
-            await hobbiesConnectionService.SendToEmailAsync(fullUsuario);
+                .BuscaUsuario(usuarioIdentity.UserName!);
+            await hobbiesConnectionService.SendToEmailAsync(fullUsuario!);
             return Result.Ok();
         }
 

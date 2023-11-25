@@ -23,8 +23,8 @@ public class Startup
     {
         GetAppSettings(services);
 
-        string? connectionString = Configuration
-            .GetConnectionString("UsuarioConnection");
+        string connectionString = Configuration
+            .GetConnectionString("UsuarioConnection")!;
 
         services.AddDbContext<UserDbContext>(options =>
             options.UseMySQL(connectionString)

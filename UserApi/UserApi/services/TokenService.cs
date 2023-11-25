@@ -13,7 +13,6 @@ public class TokenService
     {
         Claim[] direitosUsuario = new Claim[]
         {
-            new Claim("username", usuario.UserName),
             new Claim("id", usuario.Id.ToString()),
         };
 
